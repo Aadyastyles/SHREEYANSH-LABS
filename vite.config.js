@@ -5,19 +5,21 @@ import bodyParser from 'body-parser'
 import { initializeApp, getApps, cert } from 'firebase-admin/app'
 import { getDatabase } from 'firebase-admin/database'
 
-const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf-8'));
-
-if (!getApps().length) {
-  initializeApp({
-    credential: cert(serviceAccount),
-    databaseURL: 'https://shreeyansh-labs-default-rtdb.asia-southeast1.firebasedatabase.app'
-  });
-}
-
 function firebaseBackendPlugin() {
   return {
     name: 'firebase-backend',
     configureServer(server) {
+      try {
+        const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccountKey.json', 'utf-8'));
+        if (!getApps().length) {
+          initializeApp({
+            credential: cert(serviceAccount),
+            databaseURL: 'https://shreeyansh-labs-default-rtdb.asia-southeast1.firebasedatabase.app'
+          });
+        }
+      } catch (error) {
+        console.warn('Firebase admin initialization skipped: serviceAccountKey.json not found or invalid.');
+      }
       server.middlewares.use(bodyParser.json());
 
       // API Endpoint to Save Data to Firebase Realtime Database
