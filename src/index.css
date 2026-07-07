@@ -437,3 +437,8 @@ input::placeholder, textarea::placeholder {
   .main-content { padding: 1.5rem; }
   .sidebar { display: none; }
 }
+
+.date-picker-wrapper:hover > div {
+  background: var(--color-bg-card-hover) !important;
+  border-color: var(--color-text-muted-dark) !important;
+}

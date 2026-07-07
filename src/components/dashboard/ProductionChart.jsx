@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Calendar } from 'lucide-react';
 import CustomTooltip from './CustomTooltip';
 import GlassBar from './GlassBar';
 import { weeklyData, monthlyData, getDynamicDailyData } from './DashboardData';
@@ -24,22 +25,40 @@ const ProductionChart = () => {
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           {chartMode === 'daily' && (
-            <input 
-              type="date" 
-              value={dailyStartDate}
-              onChange={(e) => setDailyStartDate(e.target.value)}
-              style={{
-                padding: '4px 12px',
-                borderRadius: '20px',
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }} className="date-picker-wrapper">
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '6px 14px',
+                background: 'var(--color-bg-card)',
                 border: '1px solid var(--color-border-light)',
+                borderRadius: '20px',
                 fontSize: '0.85rem',
-                fontWeight: 500,
+                fontWeight: 600,
                 color: 'var(--color-text-dark)',
-                background: '#FFFFFF',
-                outline: 'none',
-                cursor: 'pointer'
-              }}
-            />
+                boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}>
+                <Calendar size={14} style={{ color: 'var(--color-primary-muted)' }} />
+                <span>{new Date(dailyStartDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              </div>
+              <input 
+                type="date" 
+                value={dailyStartDate}
+                onChange={(e) => setDailyStartDate(e.target.value)}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  opacity: 0,
+                  cursor: 'pointer'
+                }}
+              />
+            </div>
           )}
           <div style={{ display: 'flex', background: '#F3F4F6', padding: '4px', borderRadius: '24px', gap: '4px' }}>
             <button 
