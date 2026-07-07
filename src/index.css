@@ -55,6 +55,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 90%; /* Scales all rem-based units down globally to mimic 90% zoom */
+}
+
 body {
   font-family: 'Satoshi', -apple-system, sans-serif;
   background: var(--color-bg-main);
@@ -231,14 +235,15 @@ body {
 }
 
 .nav-item.active {
-  background: var(--color-bg-main);
-  color: var(--color-text-dark);
-  font-weight: 600;
-  box-shadow: none;
+  background: linear-gradient(90deg, rgba(22, 188, 228, 0.12) 0%, rgba(46, 49, 146, 0.03) 70%, transparent 100%);
+  color: var(--color-brand-blue);
+  font-weight: 700;
+  box-shadow: inset 4px 0 0 0 var(--color-primary);
 }
 
 .nav-item.active .chevron {
-  opacity: 0.8 !important;
+  opacity: 1 !important;
+  color: var(--color-primary);
 }
 
 /* ── Buttons ── */

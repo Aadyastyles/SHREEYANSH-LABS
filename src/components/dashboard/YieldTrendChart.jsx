@@ -12,7 +12,7 @@ const YieldTrendChart = () => {
         </div>
         <span className="badge badge-green" style={{ background: 'rgba(14, 165, 233, 0.2)', color: 'var(--color-chem-pcl3)' }}>95% latest</span>
       </div>
-      <div style={{ flex: 1, minHeight: 120 }}>
+      <div style={{ flex: 1, minHeight: 100, marginTop: '0.5rem' }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={yieldTrend} margin={{ top: 10, right: 0, left: -30, bottom: 0 }}>
             <defs>

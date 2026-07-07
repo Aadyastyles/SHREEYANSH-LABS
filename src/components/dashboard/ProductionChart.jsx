@@ -44,7 +44,7 @@ const ProductionChart = () => {
           </div>
         </div>
       </div>
-      <div style={{ flex: 1, minHeight: 300 }}>
+      <div style={{ flex: 1, minHeight: 240, marginTop: '0.5rem' }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart 
             key={chartMode}
