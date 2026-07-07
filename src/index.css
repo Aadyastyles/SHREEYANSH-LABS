@@ -126,7 +126,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--color-brand-blue);
+  color: var(--color-text-dark);
 }
 
 /* ── Card system ── */
@@ -146,56 +146,48 @@ body {
 }
 
 .card-primary {
-  background: linear-gradient(135deg, var(--color-brand-blue), #1A1C6B);
+  background: var(--color-bg-dark);
   color: #FFFFFF;
   border-radius: 16px;
   padding: 1.5rem;
   user-select: none;
-  box-shadow: 0 8px 20px rgba(46, 49, 146, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(46, 49, 146, 0.35);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .card-dark {
   background: var(--color-bg-dark-raised);
   color: #FFFFFF;
-  border: 1px solid var(--color-brand-blue);
+  border: 1px solid var(--color-border-dark);
   border-radius: 24px;
   padding: 1.8rem;
-  box-shadow:
-    0 10px 30px rgba(22, 188, 228, 0.15),
-    0 4px 12px rgba(46, 49, 146, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card-dark:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 14px 40px rgba(22, 188, 228, 0.25),
-    0 6px 16px rgba(46, 49, 146, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 .card-green {
-  background: linear-gradient(145deg, var(--color-primary-pale), var(--color-primary-light));
-  color: var(--color-brand-blue);
-  border: 1px solid rgba(22, 188, 228, 0.15);
+  background: var(--color-bg-main);
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-border-light);
   border-radius: 24px;
   padding: 1.8rem;
-  box-shadow:
-    0 1px 2px rgba(22, 188, 228, 0.08),
-    0 6px 20px rgba(22, 188, 228, 0.08);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card-green:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 2px 4px rgba(22, 188, 228, 0.12),
-    0 12px 32px rgba(22, 188, 228, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
 }
 
 /* ── Bento grid ── */
@@ -239,11 +231,10 @@ body {
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(22, 188, 228, 0.85), rgba(46, 49, 146, 0.85)); /* Sky Blue to Navy Blue with opacity */
-  backdrop-filter: blur(8px);
-  color: #FFFFFF;
+  background: var(--color-bg-main);
+  color: var(--color-text-dark);
   font-weight: 600;
-  box-shadow: 0 6px 20px rgba(46, 49, 146, 0.25); /* Navy glow */
+  box-shadow: none;
 }
 
 .nav-item.active .chevron {
