@@ -1,34 +1,34 @@
 export const dailyData = [
-  { label: 'Jul 1', PCL3: 620, PCL5: 280, POCL3: 410 },
-  { label: 'Jul 2', PCL3: 580, PCL5: 310, POCL3: 450 },
-  { label: 'Jul 3', PCL3: 710, PCL5: 380, POCL3: 320 },
-  { label: 'Jul 4', PCL3: 660, PCL5: 420, POCL3: 390 },
-  { label: 'Jul 5', PCL3: 590, PCL5: 340, POCL3: 440 },
-  { label: 'Jul 6', PCL3: 640, PCL5: 290, POCL3: 380 },
-  { label: 'Jul 7', PCL3: 720, PCL5: 360, POCL3: 420 },
-  { label: 'Jul 8', PCL3: 680, PCL5: 400, POCL3: 370 },
+  { label: 'Jul 1', PCL3: 11200, PCL5: 280, POCL3: 410 },
+  { label: 'Jul 2', PCL3: 9800,  PCL5: 310, POCL3: 450 },
+  { label: 'Jul 3', PCL3: 13100, PCL5: 380, POCL3: 320 },
+  { label: 'Jul 4', PCL3: 12600, PCL5: 420, POCL3: 390 },
+  { label: 'Jul 5', PCL3: 9500,  PCL5: 340, POCL3: 440 },
+  { label: 'Jul 6', PCL3: 10400, PCL5: 290, POCL3: 380 },
+  { label: 'Jul 7', PCL3: 14200, PCL5: 360, POCL3: 420 },
+  { label: 'Jul 8', PCL3: 13800, PCL5: 400, POCL3: 370 },
 ];
 
 export const weeklyData = [
-  { label: 'W1', PCL3: 4200, PCL5: 1800, POCL3: 2600 },
-  { label: 'W2', PCL3: 3800, PCL5: 2100, POCL3: 3100 },
-  { label: 'W3', PCL3: 5100, PCL5: 2800, POCL3: 2200 },
-  { label: 'W4', PCL3: 4600, PCL5: 3200, POCL3: 2900 },
-  { label: 'W5', PCL3: 3900, PCL5: 2400, POCL3: 3400 },
-  { label: 'W6', PCL3: 4400, PCL5: 1900, POCL3: 2800 },
-  { label: 'W7', PCL3: 5200, PCL5: 2600, POCL3: 3200 },
-  { label: 'W8', PCL3: 4800, PCL5: 3000, POCL3: 2700 },
+  { label: 'W1', PCL3: 14200, PCL5: 1800, POCL3: 2600 },
+  { label: 'W2', PCL3: 11800, PCL5: 2100, POCL3: 3100 },
+  { label: 'W3', PCL3: 17100, PCL5: 2800, POCL3: 2200 },
+  { label: 'W4', PCL3: 15600, PCL5: 3200, POCL3: 2900 },
+  { label: 'W5', PCL3: 12900, PCL5: 2400, POCL3: 3400 },
+  { label: 'W6', PCL3: 14400, PCL5: 1900, POCL3: 2800 },
+  { label: 'W7', PCL3: 18200, PCL5: 2600, POCL3: 3200 },
+  { label: 'W8', PCL3: 16800, PCL5: 3000, POCL3: 2700 },
 ];
 
 export const monthlyData = [
-  { label: 'Jan', PCL3: 18200, PCL5: 8400, POCL3: 12100 },
-  { label: 'Feb', PCL3: 17800, PCL5: 9100, POCL3: 13500 },
-  { label: 'Mar', PCL3: 19100, PCL5: 8800, POCL3: 12200 },
-  { label: 'Apr', PCL3: 18600, PCL5: 9200, POCL3: 12900 },
-  { label: 'May', PCL3: 17900, PCL5: 8400, POCL3: 13400 },
-  { label: 'Jun', PCL3: 19400, PCL5: 8900, POCL3: 12800 },
-  { label: 'Jul', PCL3: 20200, PCL5: 9600, POCL3: 14200 },
-  { label: 'Aug', PCL3: 19800, PCL5: 9000, POCL3: 13700 },
+  { label: 'Jan', PCL3: 38200, PCL5: 8400, POCL3: 12100 },
+  { label: 'Feb', PCL3: 37800, PCL5: 9100, POCL3: 13500 },
+  { label: 'Mar', PCL3: 49100, PCL5: 8800, POCL3: 12200 },
+  { label: 'Apr', PCL3: 42600, PCL5: 9200, POCL3: 12900 },
+  { label: 'May', PCL3: 37900, PCL5: 8400, POCL3: 13400 },
+  { label: 'Jun', PCL3: 44400, PCL5: 8900, POCL3: 12800 },
+  { label: 'Jul', PCL3: 56200, PCL5: 9600, POCL3: 14200 },
+  { label: 'Aug', PCL3: 52800, PCL5: 9000, POCL3: 13700 },
 ];
 
 // Using our new aesthetic chemical color palette
@@ -64,17 +64,25 @@ export const labelFormatters = {
 export const getDynamicDailyData = (startDateStr) => {
   const start = new Date(startDateStr);
   const data = [];
+  
+  // User requested random tonnages for PCL3
+  const pcl3Tons = [5, 7, 9, 6, 3, 12];
+
   for (let i = 0; i < 8; i++) {
     const d = new Date(start);
     d.setDate(d.getDate() + i);
     const month = d.toLocaleString('en-US', { month: 'short' });
     const day = d.getDate();
-    const basePCL3 = 600 + (Math.sin(i) * 100);
+    
+    // Deterministic selection so it doesn't flicker on React state re-renders (hover)
+    const basePCL3 = pcl3Tons[(day + i) % pcl3Tons.length] * 1000;
+    
     const basePCL5 = 300 + (Math.cos(i) * 100);
     const basePOCL3 = 400 + (Math.sin(i * 1.5) * 80);
+    
     data.push({
       label: `${month} ${day}`,
-      PCL3: Math.round(basePCL3),
+      PCL3: basePCL3,
       PCL5: Math.round(basePCL5),
       POCL3: Math.round(basePOCL3)
     });

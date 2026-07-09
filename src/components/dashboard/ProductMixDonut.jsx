@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import PieActiveShape from './PieActiveShape';
 import { productMix } from './DashboardData';
 
-const ProductMixDonut = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const ProductMixDonut = ({ selectedStream }) => {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  useEffect(() => {
+    if (selectedStream && selectedStream !== 'ALL') {
+      const idx = productMix.findIndex(p => p.name === selectedStream);
+      setActiveIndex(idx !== -1 ? idx : null);
+    } else {
+      setActiveIndex(null); // No pop out when ALL is selected
+    }
+  }, [selectedStream]);
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
