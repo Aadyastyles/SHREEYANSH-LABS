@@ -14,35 +14,51 @@ const ProductionChart = ({ selectedStream = 'ALL' }) => {
 
   const chartData = chartMode === 'daily' ? getDynamicDailyData(dailyStartDate) : (chartMode === 'weekly' ? weeklyData : monthlyData);
 
-  const isPCL3Only = selectedStream === 'PCL3';
-  // Slice to 6 ranges for PCL3 as suggested to fill space better
-  const displayData = isPCL3Only ? chartData.slice(-6) : chartData;
+  const isSingleStream = selectedStream !== 'ALL';
+  
+  // Prepare data (showing either all 3, or just the selected one)
+  const displayData = chartData.map(d => {
+    if (isSingleStream) {
+      return { label: d.label, [selectedStream]: d[selectedStream] };
+    }
+    return d;
+  });
 
   // Exact Y-Axis scaling per user request
   let yAxisTicks = undefined;
   let domainMax = undefined;
-  if (isPCL3Only) {
-    if (chartMode === 'daily') {
-      yAxisTicks = [0, 5000, 10000];
-      domainMax = 15000; // Compress height by raising the ceiling without adding a tick
-    } else if (chartMode === 'weekly') {
-      yAxisTicks = [0, 10000, 20000];
-      domainMax = 30000;
-    } else if (chartMode === 'monthly') {
-      yAxisTicks = [0, 15000, 30000, 45000];
-      domainMax = 45000; // Monthly was fine
-    }
+  
+  if (selectedStream === 'PCL3') {
+    if (chartMode === 'daily') { yAxisTicks = [0, 10000, 20000]; domainMax = 20000; }
+    else if (chartMode === 'weekly') { yAxisTicks = [0, 50000, 100000]; domainMax = 100000; }
+    else if (chartMode === 'monthly') { yAxisTicks = [0, 150000, 300000]; domainMax = 300000; }
+  } else if (selectedStream === 'POCL3') {
+    if (chartMode === 'daily') { yAxisTicks = [0, 10000, 20000]; domainMax = 20000; }
+    else if (chartMode === 'weekly') { yAxisTicks = [0, 25000, 50000]; domainMax = 50000; }
+    else if (chartMode === 'monthly') { yAxisTicks = [0, 100000, 200000]; domainMax = 200000; }
+  } else if (selectedStream === 'PCL5') {
+    if (chartMode === 'daily') { yAxisTicks = [0, 2000, 4000]; domainMax = 4000; }
+    else if (chartMode === 'weekly') { yAxisTicks = [0, 10000, 20000]; domainMax = 20000; }
+    else if (chartMode === 'monthly') { yAxisTicks = [0, 50000, 100000]; domainMax = 100000; }
   }
+
+  // Helper to format custom tick domains as 'Tons' for single stream view
+  const formatTick = (val) => {
+    if (isSingleStream && val !== undefined) {
+      return (val / 1000) + ' Tons';
+    }
+    return val;
+  };
 
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>
-            {isPCL3Only ? 'PCL3 Production Output' : 'Daily Production Output'}
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, letterSpacing: '-0.02em', color: 'var(--color-text-dark)' }}>
+            {chartMode.charAt(0).toUpperCase() + chartMode.slice(1)} Production Output
           </h2>
-          <div className="text-muted text-sm fw-500" style={{ marginTop: '0.2rem' }}>
-            {chartMode === 'daily' ? '8-day rolling window' : (chartMode === 'weekly' ? 'Weekly aggregated output' : 'Monthly aggregated output')}
+          <div className="text-muted text-sm fw-500" style={{ marginTop: '0.25rem' }}>
+            {isSingleStream ? `${selectedStream} detailed output` : 'Distribution across 3 chemical streams'}
           </div>
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -53,15 +69,25 @@ const ProductionChart = ({ selectedStream = 'ALL' }) => {
             />
           )}
           <div style={{ display: 'flex', background: '#F3F4F6', padding: '4px', borderRadius: '24px', gap: '4px' }}>
-            <button 
-              onClick={() => setChartMode('daily')}
-              style={{ border: 'none', background: chartMode === 'daily' ? '#FFFFFF' : 'transparent', padding: '4px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: chartMode === 'daily' ? 600 : 500, color: chartMode === 'daily' ? 'var(--color-brand-blue)' : 'var(--color-text-muted-dark)', boxShadow: chartMode === 'daily' ? '0 2px 5px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer' }}>Daily</button>
-            <button 
-              onClick={() => setChartMode('weekly')}
-              style={{ border: 'none', background: chartMode === 'weekly' ? '#FFFFFF' : 'transparent', padding: '4px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: chartMode === 'weekly' ? 600 : 500, color: chartMode === 'weekly' ? 'var(--color-brand-blue)' : 'var(--color-text-muted-dark)', boxShadow: chartMode === 'weekly' ? '0 2px 5px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer' }}>Weekly</button>
-            <button 
-              onClick={() => setChartMode('monthly')}
-              style={{ border: 'none', background: chartMode === 'monthly' ? '#FFFFFF' : 'transparent', padding: '4px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: chartMode === 'monthly' ? 600 : 500, color: chartMode === 'monthly' ? 'var(--color-brand-blue)' : 'var(--color-text-muted-dark)', boxShadow: chartMode === 'monthly' ? '0 2px 5px rgba(0,0,0,0.05)' : 'none', cursor: 'pointer' }}>Monthly</button>
+            {['daily', 'weekly', 'monthly'].map(mode => (
+              <button
+                key={mode}
+                onClick={() => setChartMode(mode)}
+                style={{ 
+                  border: 'none', 
+                  background: chartMode === mode ? '#FFFFFF' : 'transparent', 
+                  padding: '4px 12px', 
+                  borderRadius: '20px', 
+                  fontSize: '0.85rem', 
+                  fontWeight: chartMode === mode ? 600 : 500, 
+                  color: chartMode === mode ? 'var(--color-brand-blue)' : 'var(--color-text-muted-dark)', 
+                  boxShadow: chartMode === mode ? '0 2px 5px rgba(0,0,0,0.05)' : 'none', 
+                  cursor: 'pointer' 
+                }}
+              >
+                {mode.charAt(0).toUpperCase() + mode.slice(1)}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -105,7 +131,7 @@ const ProductionChart = ({ selectedStream = 'ALL' }) => {
               dataKey="label" 
               stroke="var(--color-text-muted-dark)" 
               tickLine={{ stroke: '#CBD5E1' }} 
-              axisLine={isPCL3Only ? { stroke: '#CBD5E1', strokeWidth: 1 } : { stroke: '#CBD5E1', strokeWidth: 1.5 }} 
+              axisLine={isSingleStream ? { stroke: '#CBD5E1', strokeWidth: 1 } : { stroke: '#CBD5E1', strokeWidth: 1.5 }} 
               fontSize={13} 
               dy={10} 
             />
@@ -114,20 +140,21 @@ const ProductionChart = ({ selectedStream = 'ALL' }) => {
               allowDataOverflow={true}
               width={80}
               stroke="var(--color-text-muted-dark)" 
-              tickLine={isPCL3Only ? { stroke: '#CBD5E1' } : { stroke: '#CBD5E1' }} 
-              axisLine={isPCL3Only ? false : { stroke: '#CBD5E1', strokeWidth: 1.5 }} 
+              tickLine={isSingleStream ? { stroke: '#CBD5E1' } : { stroke: '#CBD5E1' }} 
+              axisLine={isSingleStream ? false : { stroke: '#CBD5E1', strokeWidth: 1.5 }} 
               fontSize={13} 
               dx={-5} 
               ticks={yAxisTicks}
-              domain={isPCL3Only ? [0, domainMax] : undefined}
-              tickFormatter={(val) => isPCL3Only ? (val / 1000) + ' Tons' : val}
+              domain={isSingleStream ? [0, domainMax] : undefined}
+              tickFormatter={formatTick}
             />
             <Tooltip cursor={{ fill: 'rgba(0,0,0,0.02)', radius: [4,4,0,0] }} content={<CustomTooltip />} />
             
-            {isPCL3Only ? (
+            {isSingleStream ? (
               <Bar 
-                dataKey="PCL3" 
-                name="PCL3 (Phosphorus Trichloride)" 
+                dataKey={selectedStream} 
+                name={selectedStream} 
+                fill={`var(--color-chem-${selectedStream.toLowerCase()})`}
                 shape={(props) => <BuildingBar {...props} isAnyHovered={!!activeBarKey} />}
                 activeBar={(props) => <BuildingBar {...props} active={true} isAnyHovered={!!activeBarKey} />}
                 background={{ fill: 'none' }}
@@ -143,7 +170,7 @@ const ProductionChart = ({ selectedStream = 'ALL' }) => {
             )}
             
             {/* Global Cloudy Fog Overlay at bottom */}
-            {isPCL3Only && (
+            {isSingleStream && (
               <>
                 <defs>
                   <linearGradient id="fog-grad" x1="0" y1="0" x2="0" y2="1">
@@ -159,12 +186,12 @@ const ProductionChart = ({ selectedStream = 'ALL' }) => {
         </ResponsiveContainer>
       </div>
       {/* Legend */}
-      {!isPCL3Only && (
+      {!isSingleStream && (
         <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--color-border-light)' }}>
           {[
-            { label: 'PCL3 (Phosphorus Trichloride)', color: 'var(--color-chem-pcl3)' },
-            { label: 'PCL5 (Phosphorus Pentachloride)', color: 'var(--color-chem-pcl5)' },
-            { label: 'POCL3 (Phosphoryl Chloride)', color: 'var(--color-chem-pocl3)' },
+            { label: 'PCL3', color: 'var(--color-chem-pcl3)' },
+            { label: 'PCL5', color: 'var(--color-chem-pcl5)' },
+            { label: 'POCL3', color: 'var(--color-chem-pocl3)' },
           ].map(p => (
             <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-text-dark)' }}>
               <div style={{ width: 12, height: 12, borderRadius: 4, background: p.color, boxShadow: `0 2px 6px ${p.color}80` }} />

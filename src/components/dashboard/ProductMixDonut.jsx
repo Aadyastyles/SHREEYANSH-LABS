@@ -19,11 +19,20 @@ const ProductMixDonut = ({ selectedStream }) => {
     setActiveIndex(index);
   };
 
+  const resetToSelectedStream = () => {
+    if (selectedStream && selectedStream !== 'ALL') {
+      const idx = productMix.findIndex(p => p.name === selectedStream);
+      setActiveIndex(idx !== -1 ? idx : null);
+    } else {
+      setActiveIndex(null);
+    }
+  };
+
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
       <h3 style={{ fontSize: '1.1rem', fontWeight: 700, alignSelf: 'flex-start', margin: 0 }}>Product Mix</h3>
       <div className="text-muted text-sm fw-500" style={{ alignSelf: 'flex-start', marginBottom: '0.5rem' }}>Hover segments to expand</div>
-      <div style={{ width: '100%', height: 190 }}>
+      <div style={{ width: '100%', height: 190 }} onMouseLeave={resetToSelectedStream}>
         <ResponsiveContainer width="100%" height="100%" style={{ overflow: 'visible' }}>
           <PieChart style={{ overflow: 'visible' }}>
             <defs>

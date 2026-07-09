@@ -27,7 +27,7 @@ const BuildingBar = (props) => {
   const strokeColor = isHovered ? "#ffffff" : "transparent";
   const strokeWidthVal = isHovered ? 1 : 0;
 
-  const baseColor = "var(--color-chem-pcl3)"; 
+  const baseColor = fill || "var(--color-chem-pcl3)"; 
 
   const gradId = `building-grad-front-${index}`;
   const fadeRightGradId = `building-grad-right-fade-${index}`;
