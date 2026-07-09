@@ -21,8 +21,10 @@ const DashboardKpi = ({ label, value, unit, trend, trendVal, icon: Icon, colorCl
         transform: isElevated ? 'translateY(-4px)' : 'none',
         boxShadow: isElevated ? `0 12px 24px color-mix(in srgb, ${colorClass} 25%, transparent)` : 'var(--shadow-sm)',
         transition: 'all 0.2s ease-in-out',
-        border: isActive ? `1px solid color-mix(in srgb, ${colorClass} 40%, transparent)` : '1px solid var(--color-border-light)',
-        borderTop: `4px solid ${colorClass}` // override the border shorthand above
+        borderBottom: isActive ? `1px solid color-mix(in srgb, ${colorClass} 40%, transparent)` : '1px solid var(--color-border-light)',
+        borderLeft: isActive ? `1px solid color-mix(in srgb, ${colorClass} 40%, transparent)` : '1px solid var(--color-border-light)',
+        borderRight: isActive ? `1px solid color-mix(in srgb, ${colorClass} 40%, transparent)` : '1px solid var(--color-border-light)',
+        borderTop: `4px solid ${colorClass}` 
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
