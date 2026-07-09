@@ -25,6 +25,10 @@
   --color-chem-pocl3-muted: #FDBA74; /* Peach (Faded) */
   --color-chem-pocl3-glow: rgba(234, 88, 12, 0.35);
 
+  --color-chem-yp: #EAB308;          /* Yellow (Solid) for Total Consumption */
+  --color-chem-yp-muted: #FDE047;    /* Yellow (Faded) */
+  --color-chem-yp-glow: rgba(234, 179, 8, 0.35);
+
   /* ── Dark palette (sidebar, dark cards) ── */
   --color-bg-dark: #101236;        /* Very dark navy */
   --color-bg-dark-raised: #1A1C4B; /* Slightly lighter navy for cards */
