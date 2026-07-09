@@ -1,7 +1,7 @@
 import React from 'react';
 
 const BuildingBar = (props) => {
-  const { y, height, active, index, payload, background, isAnyHovered } = props;
+  const { y, height, active, index, payload, background, isAnyHovered, fill } = props;
   
   if (!height || height <= 0 || !background) return null;
 
