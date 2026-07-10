@@ -148,23 +148,6 @@ const BuildingBar = (props) => {
           strokeLinejoin="round"
         />
 
-        {/* Top Face */}
-        <polygon 
-          points={`
-            ${barX},${y} 
-            ${barX + barWidth},${y} 
-            ${barX + barWidth + shadowWidth},${Math.min(y + shadowWidth, y + height)} 
-            ${barX + shadowWidth},${Math.min(y + shadowWidth, y + height)}
-          `}
-          fill={`url(#${gradId})`}
-          strokeWidth={0}
-        />
-
-        {/* Highlight for Top Face Front Edge */}
-        <line 
-          x1={barX} y1={y} x2={barX + barWidth} y2={y} 
-          stroke="#ffffff" strokeWidth={1} opacity={0.6}
-        />
         
         {/* Fog Overlay - Covers bottom 60% of the bar's height */}
         <polygon 
