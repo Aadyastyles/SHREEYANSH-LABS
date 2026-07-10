@@ -43,11 +43,18 @@ const ProductMixDonut = ({ selectedStream }) => {
   const rotation = getRotationForStream(selectedStream, dynamicMix);
 
   useEffect(() => {
+    // Retract any popped slice instantly before the wheel starts spinning
+    setActiveIndex(null);
+    
     if (selectedStream && selectedStream !== 'YP') {
       const idx = dynamicMix.findIndex(p => p.name === selectedStream);
-      setActiveIndex(idx !== -1 ? idx : null);
-    } else {
-      setActiveIndex(null);
+      
+      // Wait for the 1.2s CSS rotation animation to finish before applying the "pop effect"
+      const timer = setTimeout(() => {
+        setActiveIndex(idx !== -1 ? idx : null);
+      }, 1200);
+      
+      return () => clearTimeout(timer);
     }
   }, [selectedStream, dynamicMix]);
 
