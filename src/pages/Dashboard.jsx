@@ -61,10 +61,10 @@ const Dashboard = () => {
 
       {/* Row 1: KPIs */}
       <div className="bento bento-3 animate-fade-up delay-100" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-        <DashboardKpi variant="primary" label="Total Consumption (YP)" value="12,450" unit="kg" trend="up" trendVal="8.4%" icon={Package} colorClass="var(--color-chem-yp)" isActive={selectedStream === 'YP'} onClick={() => handleKpiClick('YP')} />
-        <DashboardKpi label="PCL3 Output" value="8,320" unit="kg" trend="up" trendVal="5.1%" icon={Beaker} colorClass="var(--color-chem-pcl3)" isActive={selectedStream === 'PCL3'} onClick={() => handleKpiClick('PCL3')} />
-        <DashboardKpi label="PCL5 Output" value="3,140" unit="kg" trend="down" trendVal="1.2%" icon={Layers} colorClass="var(--color-chem-pcl5)" isActive={selectedStream === 'PCL5'} onClick={() => handleKpiClick('PCL5')} />
-        <DashboardKpi label="POCL3 Output" value="4,680" unit="kg" trend="up" trendVal="7.3%" icon={Droplets} colorClass="var(--color-chem-pocl3)" isActive={selectedStream === 'POCL3'} onClick={() => handleKpiClick('POCL3')} />
+        <DashboardKpi variant="primary" label="Total Consumption (YP)" value="2,450" unit="kg" trend="up" trendVal="8.4%" icon={Package} colorClass="var(--color-chem-yp)" isActive={selectedStream === 'YP'} onClick={() => handleKpiClick('YP')} />
+        <DashboardKpi label="PCL3 Output" value="11,320" unit="kg" trend="up" trendVal="5.1%" icon={Beaker} colorClass="var(--color-chem-pcl3)" isActive={selectedStream === 'PCL3'} onClick={() => handleKpiClick('PCL3')} />
+        <DashboardKpi label="PCL5 Output" value="1,840" unit="kg" trend="down" trendVal="1.2%" icon={Layers} colorClass="var(--color-chem-pcl5)" isActive={selectedStream === 'PCL5'} onClick={() => handleKpiClick('PCL5')} />
+        <DashboardKpi label="POCL3 Output" value="8,680" unit="kg" trend="up" trendVal="7.3%" icon={Droplets} colorClass="var(--color-chem-pocl3)" isActive={selectedStream === 'POCL3'} onClick={() => handleKpiClick('POCL3')} />
       </div>
 
       {/* Row 2: Production chart + Product mix + Yield */}

@@ -14,12 +14,13 @@ const ProductMixDonut = ({ selectedStream }) => {
     else if (selectedStream === 'POCL3') setRotation(41);
     else setRotation(90);
 
+    // Clear active index immediately so it doesn't stay popped out while rotating
+    setActiveIndex(null);
+
     if (selectedStream && selectedStream !== 'YP') {
       const idx = productMix.findIndex(p => p.name === selectedStream);
-      // Small timeout ensures the Recharts animation cycle catches the activeIndex update
-      setTimeout(() => setActiveIndex(idx !== -1 ? idx : null), 10);
-    } else {
-      setActiveIndex(null);
+      // Wait for the 1000ms rotation animation to complete before popping out the slice
+      setTimeout(() => setActiveIndex(idx !== -1 ? idx : null), 1000);
     }
   }, [selectedStream]);
 
@@ -69,7 +70,8 @@ const ProductMixDonut = ({ selectedStream }) => {
               startAngle={rotation}
               endAngle={rotation - 360}
               onMouseEnter={onPieEnter}
-              animationDuration={1500}
+              animationDuration={1000}
+              animationEasing="ease-out"
               animationBegin={0}
               isAnimationActive={true}
             >
