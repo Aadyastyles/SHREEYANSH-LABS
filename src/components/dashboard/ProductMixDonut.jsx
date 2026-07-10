@@ -177,7 +177,6 @@ const ProductMixDonut = ({ selectedStream }) => {
                   fill={`url(#${gradId})`}
                   style={{
                     cursor: 'pointer',
-                    filter: isActive ? `drop-shadow(0px 4px 14px ${s.hex})` : 'none',
                     transition: 'all 0.3s ease',
                   }}
                   onMouseEnter={() => onSliceEnter(s.index)}
