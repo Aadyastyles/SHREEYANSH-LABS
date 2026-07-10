@@ -14,7 +14,7 @@ const PieActiveShape = (props) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
-        style={{ filter: `drop-shadow(0px 4px 12px ${fill})` }} // Glow effect
+        style={{ filter: `drop-shadow(0px 4px 12px ${payload.color || 'rgba(0,0,0,0.5)'})` }} // Glow effect
       />
       <Sector
         cx={cx}

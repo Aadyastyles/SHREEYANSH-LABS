@@ -48,10 +48,10 @@ const ProductMixDonut = ({ selectedStream }) => {
     
     if (selectedStream && selectedStream !== 'YP') {
       const idx = dynamicMix.findIndex(p => p.name === selectedStream);
-      // Wait for the 1.2s CSS rotation animation to complete before popping out the slice
+      // Wait for the fast 0.8s CSS rotation animation to complete before popping out the slice
       const timer = setTimeout(() => {
         setActiveIndex(idx !== -1 ? idx : null);
-      }, 1200);
+      }, 800);
       return () => clearTimeout(timer);
     }
   }, [selectedStream, dynamicMix]);
@@ -95,7 +95,7 @@ const ProductMixDonut = ({ selectedStream }) => {
       </div>
       
       <div style={{ position: 'relative', width: '100%', height: 190 }} onMouseLeave={resetToSelectedStream}>
-        <div style={{ width: '100%', height: '100%', transform: `rotate(${rotation}deg)`, transition: 'transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
+        <div style={{ width: '100%', height: '100%', transform: `rotate(${rotation}deg)`, transition: 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
           <ResponsiveContainer width="100%" height="100%" style={{ overflow: 'visible' }}>
             <PieChart style={{ overflow: 'visible' }}>
             <defs>
