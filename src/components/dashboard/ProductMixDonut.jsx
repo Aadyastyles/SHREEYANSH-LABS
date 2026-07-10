@@ -5,15 +5,8 @@ import { productMix } from './DashboardData';
 
 const ProductMixDonut = ({ selectedStream }) => {
   const [activeIndex, setActiveIndex] = useState(null);
-  const [rotation, setRotation] = useState(90);
 
   useEffect(() => {
-    // Determine the ideal rotation to center the selected slice at the top
-    if (selectedStream === 'PCL3') setRotation(171);
-    else if (selectedStream === 'PCL5') setRotation(302);
-    else if (selectedStream === 'POCL3') setRotation(41);
-    else setRotation(90);
-
     if (selectedStream && selectedStream !== 'YP') {
       const idx = productMix.findIndex(p => p.name === selectedStream);
       // Immediately set the active index so it pops out instantly on click
@@ -66,8 +59,6 @@ const ProductMixDonut = ({ selectedStream }) => {
               paddingAngle={4} 
               dataKey="value" 
               strokeWidth={0}
-              startAngle={rotation}
-              endAngle={rotation - 360}
               onMouseEnter={onPieEnter}
               animationDuration={2000}
               animationEasing="ease-in-out"
