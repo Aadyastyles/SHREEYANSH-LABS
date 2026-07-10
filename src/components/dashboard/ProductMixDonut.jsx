@@ -53,13 +53,17 @@ const getRotationForStream = (stream, mix) => {
 };
 
 // Formatting helpers
-const formatDaily = (dateStr) => {
+const FormatDaily = ({ dateStr }) => {
   const d = new Date(dateStr);
   const day = d.getDate();
   const suffix = ["st", "nd", "rd"][((day + 90) % 100 - 10) % 10 - 1] || "th";
   const month = d.toLocaleDateString('en-US', { month: 'short' });
   const year = d.getFullYear().toString().slice(-2);
-  return `${day}${suffix} ${month} ${year}`;
+  return (
+    <span style={{ whiteSpace: 'nowrap' }}>
+      {day}<sup style={{ fontSize: '0.65em', fontWeight: 600 }}>{suffix}</sup> {month} '{year}
+    </span>
+  );
 };
 
 /* ── component ───────────────────────────────────────────────── */
@@ -160,12 +164,13 @@ const ProductMixDonut = ({ selectedStream }) => {
                 background: '#ffffff', padding: '6px 14px', 
                 borderRadius: '24px', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a',
                 cursor: 'pointer', border: '1px solid #e2e8f0',
-                transition: 'all 0.2s ease', boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                transition: 'all 0.2s ease', boxShadow: '0 1px 2px rgba(0,0,0,0.02)',
+                whiteSpace: 'nowrap'
               }}
             >
               <Calendar size={16} color="#0284c7" />
               <span>
-                {piePeriod === 'Daily' ? formatDaily(selectedDailyDate) : 
+                {piePeriod === 'Daily' ? <FormatDaily dateStr={selectedDailyDate} /> : 
                  piePeriod === 'Weekly' ? selectedWeeklyDate : 
                  selectedMonthlyDate}
               </span>
@@ -245,8 +250,8 @@ const ProductMixDonut = ({ selectedStream }) => {
                 )}
 
                 {piePeriod === 'Weekly' && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    {['Jul W1', 'Jul W2', 'Jul W3', 'Jul W4'].map(week => (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '150px', overflowY: 'auto', paddingRight: '4px' }}>
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].flatMap(m => [1, 2, 3, 4].map(w => `${m} W${w}`)).map(week => (
                       <div 
                         key={week}
                         onClick={() => {
