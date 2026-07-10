@@ -6,12 +6,6 @@ const PieActiveShape = (props) => {
   
   return (
     <g>
-      <text x={cx} y={cy - 10} dy={8} textAnchor="middle" fill={fill} style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
-        {payload.name}
-      </text>
-      <text x={cx} y={cy + 12} dy={8} textAnchor="middle" fill="var(--color-text-muted-dark)" style={{ fontSize: '0.85rem' }}>
-        {value}%
-      </text>
       <Sector
         cx={cx}
         cy={cy}
