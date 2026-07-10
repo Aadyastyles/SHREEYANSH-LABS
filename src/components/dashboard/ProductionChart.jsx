@@ -141,6 +141,7 @@ const ProductionChart = ({ selectedStream = 'YP' }) => {
               name={selectedStream} 
               fill={`var(--color-chem-${selectedStream.toLowerCase()})`}
               shape={(props) => <BuildingBar {...props} isAnyHovered={!!activeBarKey} />}
+
               activeBar={(props) => <BuildingBar {...props} active={true} isAnyHovered={!!activeBarKey} />}
               background={{ fill: 'none' }}
               animationDuration={1500} 
@@ -154,7 +155,7 @@ const ProductionChart = ({ selectedStream = 'YP' }) => {
                 <stop offset="100%" stopColor="#ffffff" stopOpacity={0.9} />
               </linearGradient>
             </defs>
-            <rect x="0" y="80%" width="100%" height="20%" fill="url(#fog-grad)" style={{ pointerEvents: 'none' }} />
+            <rect x="0" y="92%" width="100%" height="8%" fill="url(#fog-grad)" style={{ pointerEvents: 'none' }} />
           </BarChart>
         </ResponsiveContainer>
       </div>

@@ -19,7 +19,7 @@ const DashboardKpi = ({ label, value, unit, trend, trendVal, icon: Icon, colorCl
         gap: '0.8rem', 
         cursor: 'pointer',
         transform: isElevated ? 'translateY(-4px)' : 'none',
-        boxShadow: isElevated ? `0 12px 24px color-mix(in srgb, ${colorClass} 25%, transparent)` : 'var(--shadow-sm)',
+        boxShadow: isElevated ? `0 12px 24px rgba(0, 0, 0, 0.1)` : 'var(--shadow-sm)',
         transition: 'all 0.2s ease-in-out',
         borderBottom: isActive ? `1px solid color-mix(in srgb, ${colorClass} 40%, transparent)` : '1px solid var(--color-border-light)',
         borderLeft: isActive ? `1px solid color-mix(in srgb, ${colorClass} 40%, transparent)` : '1px solid var(--color-border-light)',
@@ -33,7 +33,7 @@ const DashboardKpi = ({ label, value, unit, trend, trendVal, icon: Icon, colorCl
           width: 38, height: 38, borderRadius: '12px',
           background: `color-mix(in srgb, ${colorClass} 15%, transparent)`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: isElevated ? `0 4px 12px color-mix(in srgb, ${colorClass} 40%, transparent)` : `0 4px 12px color-mix(in srgb, ${colorClass} 20%, transparent)`,
+          boxShadow: isElevated ? `0 4px 12px rgba(0, 0, 0, 0.1)` : `0 4px 12px color-mix(in srgb, ${colorClass} 20%, transparent)`,
           transition: 'all 0.2s ease-in-out'
         }}>
           <Icon size={20} style={{ color: colorClass }} />

@@ -69,8 +69,8 @@ const BuildingBar = (props) => {
           gradientUnits="userSpaceOnUse"
           gradientTransform={`rotate(-20, ${colX + colWidth/2}, ${colY + colHeight})`}
         >
-          <stop offset="0%" stopColor="white" stopOpacity="0.9" />
-          <stop offset="70%" stopColor="white" stopOpacity="0.9" />
+          <stop offset="0%" stopColor="white" stopOpacity="0.08" />
+          <stop offset="70%" stopColor="white" stopOpacity="0.08" />
           <stop offset="100%" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <mask id={maskId}>

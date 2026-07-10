@@ -4,11 +4,11 @@ import { yieldTrend } from './DashboardData';
 
 const YieldTrendChart = () => {
   return (
-    <div className="card" style={{ display: 'flex', flexDirection: 'column', background: 'linear-gradient(145deg, var(--color-bg-dark), var(--color-bg-dark-raised))', color: '#fff', border: 'none' }}>
+    <div className="card" style={{ display: 'flex', flexDirection: 'column', border: '1px solid var(--color-border-light)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <div>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0, color: 'var(--color-text-white)' }}>Average Yield</h3>
-          <div className="text-sm" style={{ color: 'var(--color-text-muted-light)' }}>Plant-wide efficiency</div>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0, color: 'var(--color-text-dark)' }}>Average Yield</h3>
+          <div className="text-sm" style={{ color: 'var(--color-text-muted-dark)' }}>Plant-wide efficiency</div>
         </div>
         <span className="badge badge-green" style={{ background: 'rgba(14, 165, 233, 0.2)', color: 'var(--color-chem-pcl3)' }}>95% latest</span>
       </div>
