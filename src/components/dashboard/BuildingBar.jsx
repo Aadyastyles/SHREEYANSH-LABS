@@ -19,9 +19,9 @@ const BuildingBar = (props) => {
   const isFaded = isAnyHovered && !isHovered;
   
   // Opacities
-  const frontTopOpacity = 0.90; 
-  const frontBottomOpacity = 0.15;
-  const patternOpacity = isHovered ? 0.0 : 0.90; // 10% intensity reduction for grid lines
+  const frontTopOpacity = 1.0; 
+  const frontBottomOpacity = 0.85;
+  const patternOpacity = isHovered ? 0.0 : 0.90;
   
   // White layer border on hover (minimal thickness)
   const strokeColor = isHovered ? "#ffffff" : "transparent";
@@ -40,8 +40,8 @@ const BuildingBar = (props) => {
     <g style={{ transition: 'all 0.3s ease', opacity: isFaded ? 0.4 : 1 }}>
       <defs>
         <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={baseColor} stopOpacity={1} />
-          <stop offset="100%" stopColor={baseColor} stopOpacity={0.85} />
+          <stop offset="0%" stopColor={baseColor} stopOpacity={frontTopOpacity} />
+          <stop offset="100%" stopColor={baseColor} stopOpacity={frontBottomOpacity} />
         </linearGradient>
 
         <linearGradient id={fadeRightGradId} x1="0" y1="0" x2="1" y2="0">
@@ -62,15 +62,14 @@ const BuildingBar = (props) => {
           </linearGradient>
         )}
 
-        {/* Absolute Fade Mask - Rotated to create a left-corner splash/arch effect */}
+        {/* Absolute Fade Mask - Strictly locked to the bottom 80 pixels of the chart area */}
         <linearGradient 
           id={maskGradId} 
-          x1="0" y1={colY} x2="0" y2={colY + colHeight} 
+          x1="0" y1={colY + colHeight - 80} x2="0" y2={colY + colHeight} 
           gradientUnits="userSpaceOnUse"
-          gradientTransform={`rotate(-20, ${colX + colWidth/2}, ${colY + colHeight})`}
         >
           <stop offset="0%" stopColor="white" stopOpacity="1" />
-          <stop offset="100%" stopColor="white" stopOpacity="1" />
+          <stop offset="100%" stopColor="white" stopOpacity="0.05" />
         </linearGradient>
         <mask id={maskId}>
           <rect x={colX} y={colY} width={colWidth} height={colHeight} fill={`url(#${maskGradId})`} />

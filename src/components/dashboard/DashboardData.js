@@ -12,23 +12,23 @@ export const dailyData = [
 export const weeklyData = [
   { label: 'W1', YP: 14500, PCL3: 72000, PCL5: 12500, POCL3: 45000 },
   { label: 'W2', YP: 11200, PCL3: 58000, PCL5: 9800,  POCL3: 18000 },
-  { label: 'W3', YP: 18900, PCL3: 89000, PCL5: 17200, POCL3: 65000 },
-  { label: 'W4', YP: 16400, PCL3: 76000, PCL5: 14800, POCL3: 52000 },
+  { label: 'W3', YP: 18900, PCL3: 89000, PCL5: 17200, POCL3: 35000 },
+  { label: 'W4', YP: 16400, PCL3: 76000, PCL5: 14800, POCL3: 42000 },
   { label: 'W5', YP: 12800, PCL3: 61000, PCL5: 11500, POCL3: 28000 },
-  { label: 'W6', YP: 15500, PCL3: 84000, PCL5: 13900, POCL3: 72000 },
-  { label: 'W7', YP: 19200, PCL3: 95000, PCL5: 18500, POCL3: 81000 },
-  { label: 'W8', YP: 17800, PCL3: 82000, PCL5: 16000, POCL3: 59000 },
+  { label: 'W6', YP: 15500, PCL3: 84000, PCL5: 13900, POCL3: 48000 },
+  { label: 'W7', YP: 19200, PCL3: 95000, PCL5: 18500, POCL3: 31000 },
+  { label: 'W8', YP: 17800, PCL3: 82000, PCL5: 16000, POCL3: 39000 },
 ];
 
 export const monthlyData = [
   { label: 'Jan', YP: 58000, PCL3: 285000, PCL5: 52000, POCL3: 185000 },
-  { label: 'Feb', YP: 62000, PCL3: 310000, PCL5: 58000, POCL3: 215000 },
+  { label: 'Feb', YP: 62000, PCL3: 210000, PCL5: 58000, POCL3: 115000 },
   { label: 'Mar', YP: 54000, PCL3: 272000, PCL5: 49000, POCL3: 162000 },
-  { label: 'Apr', YP: 71000, PCL3: 345000, PCL5: 68000, POCL3: 265000 },
-  { label: 'May', YP: 65000, PCL3: 328000, PCL5: 61000, POCL3: 241000 },
+  { label: 'Apr', YP: 71000, PCL3: 145000, PCL5: 68000, POCL3: 165000 },
+  { label: 'May', YP: 65000, PCL3: 228000, PCL5: 61000, POCL3: 141000 },
   { label: 'Jun', YP: 59000, PCL3: 294000, PCL5: 55000, POCL3: 198000 },
-  { label: 'Jul', YP: 78000, PCL3: 382000, PCL5: 75000, POCL3: 310000 },
-  { label: 'Aug', YP: 68000, PCL3: 335000, PCL5: 64000, POCL3: 255000 },
+  { label: 'Jul', YP: 78000, PCL3: 182000, PCL5: 75000, POCL3: 110000 },
+  { label: 'Aug', YP: 68000, PCL3: 235000, PCL5: 64000, POCL3: 155000 },
 ];
 
 // Using our new aesthetic chemical color palette
