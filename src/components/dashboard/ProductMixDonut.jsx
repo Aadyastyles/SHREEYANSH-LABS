@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Calendar, ChevronDown } from 'lucide-react';
 import { dailyData, weeklyData, monthlyData } from './DashboardData';
 
 /* ── helpers ─────────────────────────────────────────────────── */
@@ -112,20 +113,41 @@ const ProductMixDonut = ({ selectedStream }) => {
   });
 
   return (
-    <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+    <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Header + tabs */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '0.5rem', gap: '0.5rem' }}>
-        <div>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>Product Mix</h3>
-          <div className="text-muted text-sm fw-500" style={{ whiteSpace: 'nowrap' }}>Click blocks to highlight</div>
+      <div style={{ width: '100%', marginBottom: '1.2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.8rem' }}>
+          <div>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: 'var(--color-text-dark)' }}>Product Mix</h3>
+            <div className="text-muted text-sm fw-500" style={{ marginTop: '2px' }}>Interactive distribution</div>
+          </div>
+          
+          {/* Dynamic Date Picker Mock */}
+          <div style={{ 
+            display: 'flex', alignItems: 'center', gap: '6px', 
+            background: 'var(--color-bg-light)', padding: '5px 10px', 
+            borderRadius: '8px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-dark)',
+            cursor: 'pointer', border: '1px solid var(--color-border-light)',
+            transition: 'all 0.2s ease', boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+          }}>
+            <Calendar size={13} className="text-muted" />
+            <span>
+              {piePeriod === 'Daily' ? 'Jul 10, 2026' : 
+               piePeriod === 'Weekly' ? 'Week 2, Jul 2026' : 
+               'July 2026'}
+            </span>
+            <ChevronDown size={13} className="text-muted" />
+          </div>
         </div>
-        <div style={{ background: 'var(--color-bg-light)', padding: '4px', borderRadius: '8px', display: 'flex', gap: '2px', flexWrap: 'wrap', justifyContent: 'center' }}>
+
+        {/* Tabs full width */}
+        <div style={{ background: 'var(--color-bg-light)', padding: '4px', borderRadius: '8px', display: 'flex', width: '100%' }}>
           {['Daily', 'Weekly', 'Monthly'].map(tab => (
             <button
               key={tab}
               onClick={() => setPiePeriod(tab)}
               style={{
-                padding: '4px 8px', fontSize: '0.75rem', fontWeight: 600, border: 'none', borderRadius: '6px',
+                flex: 1, padding: '5px 0', fontSize: '0.75rem', fontWeight: 600, border: 'none', borderRadius: '6px',
                 cursor: 'pointer', background: piePeriod === tab ? '#fff' : 'transparent',
                 color: piePeriod === tab ? 'var(--color-text-dark)' : 'var(--color-text-muted-dark)',
                 boxShadow: piePeriod === tab ? '0 1px 3px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.2s ease',
