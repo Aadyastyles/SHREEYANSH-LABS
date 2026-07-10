@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Calendar } from 'lucide-react';
+
 import { dailyData, weeklyData, monthlyData } from './DashboardData';
+
+import CustomDatePicker from './CustomDatePicker';
 
 /* ── helpers ─────────────────────────────────────────────────── */
 
@@ -60,6 +62,7 @@ const getRotationForStream = (stream, mix) => {
 const ProductMixDonut = ({ selectedStream }) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [piePeriod, setPiePeriod] = useState('Weekly');
+  const [pieDate, setPieDate] = useState('2026-07-01');
 
   const dynamicMix = useMemo(() => computeMix(piePeriod), [piePeriod]);
   const rotation = getRotationForStream(selectedStream, dynamicMix);
@@ -115,32 +118,18 @@ const ProductMixDonut = ({ selectedStream }) => {
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Header + tabs */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', marginBottom: '1rem' }}>
-        <div style={{ maxWidth: '35%' }}>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: '#0f172a', lineHeight: '1.2' }}>
-            Product Mix
-          </h3>
-          <div className="text-muted text-sm fw-500" style={{ marginTop: '4px', lineHeight: '1.3' }}>
-            Click blocks to highlight
-          </div>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '1.2rem' }}>
+        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0, marginRight: '1rem' }}>
+          Production Summary
+        </h3>
         
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-          {/* Dynamic Date Picker Mock - Pill Shape */}
-          <div style={{ 
-            display: 'flex', alignItems: 'center', gap: '8px', 
-            background: '#ffffff', padding: '6px 14px', 
-            borderRadius: '24px', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a',
-            cursor: 'pointer', border: '1px solid #e2e8f0',
-            transition: 'all 0.2s ease'
-          }}>
-            <Calendar size={16} color="#0284c7" />
-            <span>
-              {piePeriod === 'Daily' ? 'Jul 1, 2026' : 
-               piePeriod === 'Weekly' ? 'Week 2, Jul 2026' : 
-               'July 2026'}
-            </span>
-          </div>
+          {/* Dynamic Real Date Picker */}
+          <CustomDatePicker 
+            mode={piePeriod.toLowerCase()}
+            selectedDate={pieDate}
+            onChange={setPieDate}
+          />
 
           {/* Tabs - Pill Shape */}
           <div style={{ background: '#F3F4F6', padding: '4px', borderRadius: '24px', display: 'flex', gap: '4px' }}>
