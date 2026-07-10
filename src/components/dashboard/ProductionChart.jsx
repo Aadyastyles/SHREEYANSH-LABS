@@ -14,12 +14,7 @@ const ProductionChart = ({ selectedStream = 'YP' }) => {
 
   const chartData = chartMode === 'daily' ? getDynamicDailyData(dailyStartDate) : (chartMode === 'weekly' ? weeklyData : monthlyData);
 
-  // Calculate YP data dynamically to fit the requested scale based on existing data
-  const displayData = chartData.map(d => {
-    // For Daily: PCL5 is ~300-400. YP scale is 0-4000. 300 * 8 = 2400 (fits perfectly).
-    const ypVal = d.PCL5 * 8; 
-    return { ...d, YP: ypVal };
-  });
+  const displayData = chartData;
 
   // Exact Y-Axis scaling per user request
   let yAxisTicks = undefined;

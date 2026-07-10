@@ -5,13 +5,21 @@ import { productMix } from './DashboardData';
 
 const ProductMixDonut = ({ selectedStream }) => {
   const [activeIndex, setActiveIndex] = useState(null);
+  const [rotation, setRotation] = useState(90);
 
   useEffect(() => {
-    if (selectedStream && selectedStream !== 'ALL') {
+    // Determine the ideal rotation to center the selected slice at the top
+    if (selectedStream === 'PCL3') setRotation(171);
+    else if (selectedStream === 'PCL5') setRotation(302);
+    else if (selectedStream === 'POCL3') setRotation(41);
+    else setRotation(90);
+
+    if (selectedStream && selectedStream !== 'YP') {
       const idx = productMix.findIndex(p => p.name === selectedStream);
-      setActiveIndex(idx !== -1 ? idx : null);
+      // Small timeout ensures the Recharts animation cycle catches the activeIndex update
+      setTimeout(() => setActiveIndex(idx !== -1 ? idx : null), 10);
     } else {
-      setActiveIndex(null); // No pop out when ALL is selected
+      setActiveIndex(null);
     }
   }, [selectedStream]);
 
@@ -20,7 +28,7 @@ const ProductMixDonut = ({ selectedStream }) => {
   };
 
   const resetToSelectedStream = () => {
-    if (selectedStream && selectedStream !== 'ALL') {
+    if (selectedStream && selectedStream !== 'YP') {
       const idx = productMix.findIndex(p => p.name === selectedStream);
       setActiveIndex(idx !== -1 ? idx : null);
     } else {
@@ -58,6 +66,8 @@ const ProductMixDonut = ({ selectedStream }) => {
               paddingAngle={4} 
               dataKey="value" 
               strokeWidth={0}
+              startAngle={rotation}
+              endAngle={rotation - 360}
               onMouseEnter={onPieEnter}
               animationDuration={1500}
               animationBegin={0}

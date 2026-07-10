@@ -1,34 +1,34 @@
 export const dailyData = [
-  { label: 'Jul 1', PCL3: 11200, PCL5: 280, POCL3: 410 },
-  { label: 'Jul 2', PCL3: 9800,  PCL5: 310, POCL3: 450 },
-  { label: 'Jul 3', PCL3: 13100, PCL5: 380, POCL3: 320 },
-  { label: 'Jul 4', PCL3: 12600, PCL5: 420, POCL3: 390 },
-  { label: 'Jul 5', PCL3: 9500,  PCL5: 340, POCL3: 440 },
-  { label: 'Jul 6', PCL3: 10400, PCL5: 290, POCL3: 380 },
-  { label: 'Jul 7', PCL3: 14200, PCL5: 360, POCL3: 420 },
-  { label: 'Jul 8', PCL3: 13800, PCL5: 400, POCL3: 370 },
+  { label: 'Jul 1', YP: 2100, PCL3: 12500, PCL5: 1800, POCL3: 11200 },
+  { label: 'Jul 2', YP: 1800, PCL3: 9800,  PCL5: 2400, POCL3: 4500 },
+  { label: 'Jul 3', YP: 2900, PCL3: 14200, PCL5: 1500, POCL3: 13500 },
+  { label: 'Jul 4', YP: 1500, PCL3: 8600,  PCL5: 2800, POCL3: 0 },
+  { label: 'Jul 5', YP: 2400, PCL3: 11500, PCL5: 1900, POCL3: 8400 },
+  { label: 'Jul 6', YP: 1200, PCL3: 6400,  PCL5: 1100, POCL3: 2100 },
+  { label: 'Jul 7', YP: 2800, PCL3: 13200, PCL5: 2900, POCL3: 14800 },
+  { label: 'Jul 8', YP: 2200, PCL3: 10800, PCL5: 2200, POCL3: 9700 },
 ];
 
 export const weeklyData = [
-  { label: 'W1', PCL3: 14200, PCL5: 1800, POCL3: 2600 },
-  { label: 'W2', PCL3: 11800, PCL5: 2100, POCL3: 3100 },
-  { label: 'W3', PCL3: 17100, PCL5: 2800, POCL3: 2200 },
-  { label: 'W4', PCL3: 15600, PCL5: 3200, POCL3: 2900 },
-  { label: 'W5', PCL3: 12900, PCL5: 2400, POCL3: 3400 },
-  { label: 'W6', PCL3: 14400, PCL5: 1900, POCL3: 2800 },
-  { label: 'W7', PCL3: 18200, PCL5: 2600, POCL3: 3200 },
-  { label: 'W8', PCL3: 16800, PCL5: 3000, POCL3: 2700 },
+  { label: 'W1', YP: 14500, PCL3: 72000, PCL5: 12500, POCL3: 45000 },
+  { label: 'W2', YP: 11200, PCL3: 58000, PCL5: 9800,  POCL3: 18000 },
+  { label: 'W3', YP: 18900, PCL3: 89000, PCL5: 17200, POCL3: 65000 },
+  { label: 'W4', YP: 16400, PCL3: 76000, PCL5: 14800, POCL3: 52000 },
+  { label: 'W5', YP: 12800, PCL3: 61000, PCL5: 11500, POCL3: 28000 },
+  { label: 'W6', YP: 15500, PCL3: 84000, PCL5: 13900, POCL3: 72000 },
+  { label: 'W7', YP: 19200, PCL3: 95000, PCL5: 18500, POCL3: 81000 },
+  { label: 'W8', YP: 17800, PCL3: 82000, PCL5: 16000, POCL3: 59000 },
 ];
 
 export const monthlyData = [
-  { label: 'Jan', PCL3: 38200, PCL5: 8400, POCL3: 12100 },
-  { label: 'Feb', PCL3: 37800, PCL5: 9100, POCL3: 13500 },
-  { label: 'Mar', PCL3: 49100, PCL5: 8800, POCL3: 12200 },
-  { label: 'Apr', PCL3: 42600, PCL5: 9200, POCL3: 12900 },
-  { label: 'May', PCL3: 37900, PCL5: 8400, POCL3: 13400 },
-  { label: 'Jun', PCL3: 44400, PCL5: 8900, POCL3: 12800 },
-  { label: 'Jul', PCL3: 56200, PCL5: 9600, POCL3: 14200 },
-  { label: 'Aug', PCL3: 52800, PCL5: 9000, POCL3: 13700 },
+  { label: 'Jan', YP: 58000, PCL3: 285000, PCL5: 52000, POCL3: 185000 },
+  { label: 'Feb', YP: 62000, PCL3: 310000, PCL5: 58000, POCL3: 215000 },
+  { label: 'Mar', YP: 54000, PCL3: 272000, PCL5: 49000, POCL3: 162000 },
+  { label: 'Apr', YP: 71000, PCL3: 345000, PCL5: 68000, POCL3: 265000 },
+  { label: 'May', YP: 65000, PCL3: 328000, PCL5: 61000, POCL3: 241000 },
+  { label: 'Jun', YP: 59000, PCL3: 294000, PCL5: 55000, POCL3: 198000 },
+  { label: 'Jul', YP: 78000, PCL3: 382000, PCL5: 75000, POCL3: 310000 },
+  { label: 'Aug', YP: 68000, PCL3: 335000, PCL5: 64000, POCL3: 255000 },
 ];
 
 // Using our new aesthetic chemical color palette
