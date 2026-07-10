@@ -62,18 +62,16 @@ const BuildingBar = (props) => {
           </linearGradient>
         )}
 
-        {/* Absolute Fade Mask - Strictly locked to the bottom 80 pixels of the chart area */}
+        {/* Fog Overlay Gradient - Stretches from 0% to 60% of the bar's height (starts 40% from top) */}
         <linearGradient 
           id={maskGradId} 
-          x1="0" y1={colY + colHeight - 80} x2="0" y2={colY + colHeight} 
-          gradientUnits="userSpaceOnUse"
+          x1="0" y1="0" x2="0" y2="1" 
+          gradientUnits="objectBoundingBox"
         >
-          <stop offset="0%" stopColor="white" stopOpacity="1" />
-          <stop offset="100%" stopColor="white" stopOpacity="0.05" />
+          <stop offset="0%" stopColor="white" stopOpacity="0" />
+          <stop offset="40%" stopColor="white" stopOpacity="0" />
+          <stop offset="100%" stopColor="white" stopOpacity="0.5" />
         </linearGradient>
-        <mask id={maskId}>
-          <rect x={colX} y={colY} width={colWidth} height={colHeight} fill={`url(#${maskGradId})`} />
-        </mask>
       </defs>
 
       {/* Hover Shade projecting upwards from the perfectly traced top of the 3D bar */}
@@ -94,8 +92,8 @@ const BuildingBar = (props) => {
       <line x1={colX} y1={colY} x2={colX} y2={colY + colHeight} stroke="#E2E8F0" strokeWidth={1} />
       <line x1={colRight} y1={colY} x2={colRight} y2={colY + colHeight} stroke="#E2E8F0" strokeWidth={1} />
 
-      {/* Mask applies the fixed bottom white fog to everything inside */}
-      <g mask={`url(#${maskId})`}>
+      {/* Main Container */}
+      <g>
         {/* Main Front Face */}
         <rect 
           x={barX} y={y} width={barWidth} height={height} 
@@ -148,6 +146,37 @@ const BuildingBar = (props) => {
           stroke={strokeColor}
           strokeWidth={strokeWidthVal}
           strokeLinejoin="round"
+        />
+
+        {/* Top Face */}
+        <polygon 
+          points={`
+            ${barX},${y} 
+            ${barX + barWidth},${y} 
+            ${barX + barWidth + shadowWidth},${Math.min(y + shadowWidth, y + height)} 
+            ${barX + shadowWidth},${Math.min(y + shadowWidth, y + height)}
+          `}
+          fill={`url(#${gradId})`}
+          strokeWidth={0}
+        />
+
+        {/* Highlight for Top Face Front Edge */}
+        <line 
+          x1={barX} y1={y} x2={barX + barWidth} y2={y} 
+          stroke="#ffffff" strokeWidth={1} opacity={0.6}
+        />
+        
+        {/* Fog Overlay - Covers bottom 60% of the bar's height */}
+        <polygon 
+          points={`
+            ${barX},${y} 
+            ${barX + barWidth},${y} 
+            ${barX + barWidth + shadowWidth},${Math.min(y + shadowWidth, y + height)} 
+            ${barX + barWidth + shadowWidth},${y + height} 
+            ${barX},${y + height}
+          `}
+          fill={`url(#${maskGradId})`}
+          style={{ pointerEvents: 'none' }}
         />
       </g>
       
