@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-
+import { Calendar } from 'lucide-react';
 import { dailyData, weeklyData, monthlyData } from './DashboardData';
-
-import CustomDatePicker from './CustomDatePicker';
 
 /* ── helpers ─────────────────────────────────────────────────── */
 
@@ -62,7 +60,10 @@ const getRotationForStream = (stream, mix) => {
 const ProductMixDonut = ({ selectedStream }) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [piePeriod, setPiePeriod] = useState('Weekly');
-  const [pieDate, setPieDate] = useState('2026-07-01');
+  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+  const [selectedDailyDate, setSelectedDailyDate] = useState('2026-07-01');
+  const [selectedWeeklyDate, setSelectedWeeklyDate] = useState('Week 1, Jul 2026');
+  const [selectedMonthlyDate, setSelectedMonthlyDate] = useState('July 2026');
 
   const dynamicMix = useMemo(() => computeMix(piePeriod), [piePeriod]);
   const rotation = getRotationForStream(selectedStream, dynamicMix);
@@ -118,25 +119,126 @@ const ProductMixDonut = ({ selectedStream }) => {
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Header + tabs */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '1.2rem' }}>
-        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0, marginRight: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '1rem', position: 'relative' }}>
+        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: '#0f172a', lineHeight: '1.2' }}>
           Production Summary
         </h3>
         
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-          {/* Dynamic Real Date Picker */}
-          <CustomDatePicker 
-            mode={piePeriod.toLowerCase()}
-            selectedDate={pieDate}
-            onChange={setPieDate}
-          />
+          
+          {/* Custom Date Picker Container */}
+          <div style={{ position: 'relative' }}>
+            <div 
+              onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
+              style={{ 
+                display: 'flex', alignItems: 'center', gap: '8px', 
+                background: '#ffffff', padding: '6px 14px', 
+                borderRadius: '24px', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a',
+                cursor: 'pointer', border: '1px solid #e2e8f0',
+                transition: 'all 0.2s ease', boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+              }}
+            >
+              <Calendar size={16} color="#0284c7" />
+              <span>
+                {piePeriod === 'Daily' ? new Date(selectedDailyDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 
+                 piePeriod === 'Weekly' ? selectedWeeklyDate : 
+                 selectedMonthlyDate}
+              </span>
+            </div>
+
+            {/* Dropdown Popup */}
+            {isDateDropdownOpen && (
+              <div 
+                className="animate-fade-up"
+                style={{
+                  position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  backdropFilter: 'blur(12px)',
+                  borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.4)',
+                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.08)',
+                  padding: '1rem', zIndex: 100, minWidth: '220px'
+                }}
+              >
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Select {piePeriod}
+                </div>
+                
+                {piePeriod === 'Daily' && (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+                    {Array.from({length: 31}, (_, i) => i + 1).map(day => (
+                      <div 
+                        key={day}
+                        onClick={() => {
+                          setSelectedDailyDate(`2026-07-${String(day).padStart(2, '0')}`);
+                          setIsDateDropdownOpen(false);
+                        }}
+                        style={{
+                          width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: '0.75rem', fontWeight: 500, borderRadius: '4px', cursor: 'pointer',
+                          background: selectedDailyDate.endsWith(`-${String(day).padStart(2, '0')}`) ? '#0284c7' : 'transparent',
+                          color: selectedDailyDate.endsWith(`-${String(day).padStart(2, '0')}`) ? '#fff' : '#0f172a',
+                        }}
+                      >
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {piePeriod === 'Weekly' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    {['Week 1, Jul 2026', 'Week 2, Jul 2026', 'Week 3, Jul 2026', 'Week 4, Jul 2026'].map(week => (
+                      <div 
+                        key={week}
+                        onClick={() => {
+                          setSelectedWeeklyDate(week);
+                          setIsDateDropdownOpen(false);
+                        }}
+                        style={{
+                          padding: '6px 12px', fontSize: '0.8rem', fontWeight: 500, borderRadius: '6px', cursor: 'pointer',
+                          background: selectedWeeklyDate === week ? '#f1f5f9' : 'transparent',
+                          color: selectedWeeklyDate === week ? '#0284c7' : '#0f172a'
+                        }}
+                      >
+                        {week}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {piePeriod === 'Monthly' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '150px', overflowY: 'auto', paddingRight: '4px' }}>
+                    {['January 2026', 'February 2026', 'March 2026', 'April 2026', 'May 2026', 'June 2026', 'July 2026', 'August 2026', 'September 2026', 'October 2026', 'November 2026', 'December 2026'].map(month => (
+                      <div 
+                        key={month}
+                        onClick={() => {
+                          setSelectedMonthlyDate(month);
+                          setIsDateDropdownOpen(false);
+                        }}
+                        style={{
+                          padding: '6px 12px', fontSize: '0.8rem', fontWeight: 500, borderRadius: '6px', cursor: 'pointer',
+                          background: selectedMonthlyDate === month ? '#f1f5f9' : 'transparent',
+                          color: selectedMonthlyDate === month ? '#0284c7' : '#0f172a'
+                        }}
+                      >
+                        {month}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Tabs - Pill Shape */}
           <div style={{ background: '#F3F4F6', padding: '4px', borderRadius: '24px', display: 'flex', gap: '4px' }}>
             {['Daily', 'Weekly', 'Monthly'].map(tab => (
               <button
                 key={tab}
-                onClick={() => setPiePeriod(tab)}
+                onClick={() => {
+                  setPiePeriod(tab);
+                  setIsDateDropdownOpen(false); // Close dropdown when switching tabs
+                }}
                 style={{
                   padding: '4px 12px', fontSize: '0.8rem', fontWeight: piePeriod === tab ? 600 : 500, border: 'none', borderRadius: '20px',
                   cursor: 'pointer', background: piePeriod === tab ? '#ffffff' : 'transparent',
