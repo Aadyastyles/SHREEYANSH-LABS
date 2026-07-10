@@ -40,8 +40,8 @@ const BuildingBar = (props) => {
     <g style={{ transition: 'all 0.3s ease', opacity: isFaded ? 0.4 : 1 }}>
       <defs>
         <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={baseColor} stopOpacity={frontTopOpacity} />
-          <stop offset="100%" stopColor={baseColor} stopOpacity={frontBottomOpacity} />
+          <stop offset="0%" stopColor={baseColor} stopOpacity={1} />
+          <stop offset="100%" stopColor={baseColor} stopOpacity={0.85} />
         </linearGradient>
 
         <linearGradient id={fadeRightGradId} x1="0" y1="0" x2="1" y2="0">
