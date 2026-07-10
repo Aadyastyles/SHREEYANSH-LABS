@@ -125,7 +125,7 @@ const ProductMixDonut = ({ selectedStream }) => {
               animationDuration={1500}
               animationEasing="ease-in-out"
               animationBegin={0}
-              isAnimationActive={true}
+              isAnimationActive={false}
             >
               {dynamicMix.map((entry, i) => {
                 const chemKey = entry.name.toLowerCase();
