@@ -67,6 +67,8 @@ export const getDynamicDailyData = (startDateStr) => {
   
   // User requested random tonnages for PCL3
   const pcl3Tons = [5, 7, 9, 6, 3, 12];
+  // User requested random tonnages for YP (1 to 3 tons)
+  const ypTons = [1.5, 2.8, 1.2, 2.1, 3.0, 1.8, 2.5, 1.1];
 
   for (let i = 0; i < 8; i++) {
     const d = new Date(start);
@@ -75,6 +77,7 @@ export const getDynamicDailyData = (startDateStr) => {
     const day = d.getDate();
     
     // Deterministic selection so it doesn't flicker on React state re-renders (hover)
+    const baseYP = ypTons[(day + i) % ypTons.length] * 1000;
     const basePCL3 = pcl3Tons[(day + i) % pcl3Tons.length] * 1000;
     
     const basePCL5 = 300 + (Math.cos(i) * 100);
@@ -82,6 +85,7 @@ export const getDynamicDailyData = (startDateStr) => {
     
     data.push({
       label: `${month} ${day}`,
+      YP: Math.round(baseYP),
       PCL3: basePCL3,
       PCL5: Math.round(basePCL5),
       POCL3: Math.round(basePOCL3)
