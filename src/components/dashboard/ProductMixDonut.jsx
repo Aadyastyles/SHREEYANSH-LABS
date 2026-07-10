@@ -114,18 +114,18 @@ const ProductMixDonut = ({ selectedStream }) => {
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
       {/* Header + tabs */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '0.5rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '0.5rem', gap: '0.5rem' }}>
         <div>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Product Mix</h3>
-          <div className="text-muted text-sm fw-500">Click blocks to highlight</div>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>Product Mix</h3>
+          <div className="text-muted text-sm fw-500" style={{ whiteSpace: 'nowrap' }}>Click blocks to highlight</div>
         </div>
-        <div style={{ background: 'var(--color-bg-light)', padding: '4px', borderRadius: '8px', display: 'flex', gap: '4px' }}>
+        <div style={{ background: 'var(--color-bg-light)', padding: '4px', borderRadius: '8px', display: 'flex', gap: '2px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {['Daily', 'Weekly', 'Monthly'].map(tab => (
             <button
               key={tab}
               onClick={() => setPiePeriod(tab)}
               style={{
-                padding: '4px 12px', fontSize: '0.75rem', fontWeight: 600, border: 'none', borderRadius: '6px',
+                padding: '4px 8px', fontSize: '0.75rem', fontWeight: 600, border: 'none', borderRadius: '6px',
                 cursor: 'pointer', background: piePeriod === tab ? '#fff' : 'transparent',
                 color: piePeriod === tab ? 'var(--color-text-dark)' : 'var(--color-text-muted-dark)',
                 boxShadow: piePeriod === tab ? '0 1px 3px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.2s ease',
