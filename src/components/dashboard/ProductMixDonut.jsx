@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Calendar } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { dailyData, weeklyData, monthlyData } from './DashboardData';
 
 /* ── helpers ─────────────────────────────────────────────────── */
@@ -23,7 +23,6 @@ const computeMix = (period) => {
 
 const degToRad = (deg) => (deg * Math.PI) / 180;
 
-// Build an SVG arc path for a donut sector
 const describeArc = (cx, cy, innerR, outerR, startAngle, endAngle) => {
   const startOuter = { x: cx + outerR * Math.cos(degToRad(startAngle)), y: cy + outerR * Math.sin(degToRad(startAngle)) };
   const endOuter   = { x: cx + outerR * Math.cos(degToRad(endAngle)),   y: cy + outerR * Math.sin(degToRad(endAngle)) };
@@ -43,16 +42,24 @@ const describeArc = (cx, cy, innerR, outerR, startAngle, endAngle) => {
 const getRotationForStream = (stream, mix) => {
   if (!stream || stream === 'YP') return 0;
   const totalValue = mix.reduce((acc, curr) => acc + curr.value, 0);
-  let currentAngle = -90; // start at top
+  let currentAngle = -90; 
   for (let i = 0; i < mix.length; i++) {
     const sliceAngle = (mix[i].value / totalValue) * 360;
     const midPoint = currentAngle + sliceAngle / 2;
-    if (mix[i].name === stream) {
-      return -midPoint - 90; // rotate so midpoint lands at top (-90deg)
-    }
+    if (mix[i].name === stream) return -midPoint - 90;
     currentAngle += sliceAngle;
   }
   return 0;
+};
+
+// Formatting helpers
+const formatDaily = (dateStr) => {
+  const d = new Date(dateStr);
+  const day = d.getDate();
+  const suffix = ["st", "nd", "rd"][((day + 90) % 100 - 10) % 10 - 1] || "th";
+  const month = d.toLocaleDateString('en-US', { month: 'short' });
+  const year = d.getFullYear().toString().slice(-2);
+  return `${day}${suffix} ${month} ${year}`;
 };
 
 /* ── component ───────────────────────────────────────────────── */
@@ -61,14 +68,29 @@ const ProductMixDonut = ({ selectedStream }) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [piePeriod, setPiePeriod] = useState('Weekly');
   const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
-  const [selectedDailyDate, setSelectedDailyDate] = useState('2026-07-01');
-  const [selectedWeeklyDate, setSelectedWeeklyDate] = useState('Week 1, Jul 2026');
-  const [selectedMonthlyDate, setSelectedMonthlyDate] = useState('July 2026');
+  const [selectedDailyDate, setSelectedDailyDate] = useState('2026-07-03');
+  const [selectedWeeklyDate, setSelectedWeeklyDate] = useState('Jul W2');
+  const [selectedMonthlyDate, setSelectedMonthlyDate] = useState('Jul 26');
+  
+  // Daily calendar state
+  const [currentMonthDate, setCurrentMonthDate] = useState(new Date('2026-07-01'));
+  
+  const dropdownRef = useRef(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDateDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const dynamicMix = useMemo(() => computeMix(piePeriod), [piePeriod]);
   const rotation = getRotationForStream(selectedStream, dynamicMix);
 
-  // When a KPI block is clicked, clear pop then pop after rotation ends
   useEffect(() => {
     setActiveIndex(null);
     if (selectedStream && selectedStream !== 'YP') {
@@ -90,21 +112,19 @@ const ProductMixDonut = ({ selectedStream }) => {
     }
   };
 
-  // Geometry
   const size = 190;
   const cx = size / 2;
   const cy = size / 2;
   const innerR = 50;
   const outerR = 75;
-  const popExtra = 12;      // extra radius when popped
-  const ringGap = 3;        // small outer ring
-  const padAngle = 3;       // degrees gap between slices
+  const popExtra = 12;
+  const ringGap = 3;
+  const padAngle = 3;
 
   const totalValue = dynamicMix.reduce((acc, c) => acc + c.value, 0);
 
-  // Compute each slice's start/end angles
   const slices = [];
-  let angle = -90; // start from top
+  let angle = -90;
   dynamicMix.forEach((entry, i) => {
     const sweep = (entry.value / totalValue) * 360;
     slices.push({
@@ -116,18 +136,23 @@ const ProductMixDonut = ({ selectedStream }) => {
     angle += sweep;
   });
 
+  // Calendar helpers
+  const daysInMonth = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), 1).getDay();
+
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {/* Header + tabs */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '1rem', position: 'relative' }}>
-        <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: '#0f172a', lineHeight: '1.2' }}>
-          Production Summary
-        </h3>
+      {/* Header Area */}
+      <div style={{ width: '100%', marginBottom: '1rem' }}>
         
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+        {/* Row 1: Title and Calendar Pill */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', marginBottom: '0.5rem' }}>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: '#0f172a', lineHeight: '1.2' }}>
+            Production Summary
+          </h3>
           
           {/* Custom Date Picker Container */}
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }} ref={dropdownRef}>
             <div 
               onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
               style={{ 
@@ -140,7 +165,7 @@ const ProductMixDonut = ({ selectedStream }) => {
             >
               <Calendar size={16} color="#0284c7" />
               <span>
-                {piePeriod === 'Daily' ? new Date(selectedDailyDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 
+                {piePeriod === 'Daily' ? formatDaily(selectedDailyDate) : 
                  piePeriod === 'Weekly' ? selectedWeeklyDate : 
                  selectedMonthlyDate}
               </span>
@@ -156,38 +181,72 @@ const ProductMixDonut = ({ selectedStream }) => {
                   backdropFilter: 'blur(12px)',
                   borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.4)',
                   boxShadow: '0 12px 40px rgba(0, 0, 0, 0.08)',
-                  padding: '1rem', zIndex: 100, minWidth: '220px'
+                  padding: '1rem', zIndex: 100, minWidth: '240px'
                 }}
               >
-                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Select {piePeriod}
-                </div>
-                
+                {/* DAILY FULL CALENDAR */}
                 {piePeriod === 'Daily' && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
-                    {Array.from({length: 31}, (_, i) => i + 1).map(day => (
-                      <div 
-                        key={day}
-                        onClick={() => {
-                          setSelectedDailyDate(`2026-07-${String(day).padStart(2, '0')}`);
-                          setIsDateDropdownOpen(false);
-                        }}
-                        style={{
-                          width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          fontSize: '0.75rem', fontWeight: 500, borderRadius: '4px', cursor: 'pointer',
-                          background: selectedDailyDate.endsWith(`-${String(day).padStart(2, '0')}`) ? '#0284c7' : 'transparent',
-                          color: selectedDailyDate.endsWith(`-${String(day).padStart(2, '0')}`) ? '#fff' : '#0f172a',
-                        }}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <button 
+                        onClick={() => setCurrentMonthDate(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() - 1, 1))}
+                        style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#64748b' }}
                       >
-                        {day}
+                        <ChevronLeft size={16} />
+                      </button>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>
+                        {currentMonthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                       </div>
-                    ))}
+                      <button 
+                        onClick={() => setCurrentMonthDate(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() + 1, 1))}
+                        style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#64748b' }}
+                      >
+                        <ChevronRight size={16} />
+                      </button>
+                    </div>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', justifyItems: 'center', marginBottom: '4px' }}>
+                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => (
+                        <div key={day} style={{ fontSize: '0.7rem', fontWeight: 600, color: '#94a3b8' }}>{day}</div>
+                      ))}
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', justifyItems: 'center' }}>
+                      {Array.from({length: firstDayOfMonth}).map((_, i) => (
+                        <div key={`empty-${i}`} style={{ width: '24px', height: '24px' }} />
+                      ))}
+                      {Array.from({length: daysInMonth}, (_, i) => i + 1).map(day => {
+                        const yyyy = currentMonthDate.getFullYear();
+                        const mm = String(currentMonthDate.getMonth() + 1).padStart(2, '0');
+                        const dd = String(day).padStart(2, '0');
+                        const fullDateStr = `${yyyy}-${mm}-${dd}`;
+                        const isSelected = selectedDailyDate === fullDateStr;
+
+                        return (
+                          <div 
+                            key={day}
+                            onClick={() => {
+                              setSelectedDailyDate(fullDateStr);
+                              setIsDateDropdownOpen(false);
+                            }}
+                            style={{
+                              width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              fontSize: '0.75rem', fontWeight: 500, borderRadius: '4px', cursor: 'pointer',
+                              background: isSelected ? '#0284c7' : 'transparent',
+                              color: isSelected ? '#fff' : '#0f172a',
+                            }}
+                          >
+                            {day}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
 
                 {piePeriod === 'Weekly' && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    {['Week 1, Jul 2026', 'Week 2, Jul 2026', 'Week 3, Jul 2026', 'Week 4, Jul 2026'].map(week => (
+                    {['Jul W1', 'Jul W2', 'Jul W3', 'Jul W4'].map(week => (
                       <div 
                         key={week}
                         onClick={() => {
@@ -208,7 +267,7 @@ const ProductMixDonut = ({ selectedStream }) => {
 
                 {piePeriod === 'Monthly' && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '150px', overflowY: 'auto', paddingRight: '4px' }}>
-                    {['January 2026', 'February 2026', 'March 2026', 'April 2026', 'May 2026', 'June 2026', 'July 2026', 'August 2026', 'September 2026', 'October 2026', 'November 2026', 'December 2026'].map(month => (
+                    {['Jan 26', 'Feb 26', 'Mar 26', 'Apr 26', 'May 26', 'Jun 26', 'Jul 26', 'Aug 26', 'Sep 26', 'Oct 26', 'Nov 26', 'Dec 26'].map(month => (
                       <div 
                         key={month}
                         onClick={() => {
@@ -229,7 +288,10 @@ const ProductMixDonut = ({ selectedStream }) => {
               </div>
             )}
           </div>
+        </div>
 
+        {/* Row 2: Tabs */}
+        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
           {/* Tabs - Pill Shape */}
           <div style={{ background: '#F3F4F6', padding: '4px', borderRadius: '24px', display: 'flex', gap: '4px' }}>
             {['Daily', 'Weekly', 'Monthly'].map(tab => (
