@@ -45,8 +45,8 @@ const BuildingBar = (props) => {
         </linearGradient>
 
         <linearGradient id={fadeRightGradId} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="white" stopOpacity="0.10" />
-          <stop offset="100%" stopColor="white" stopOpacity="0.25" />
+          <stop offset="0%" stopColor="black" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="black" stopOpacity="0.30" />
         </linearGradient>
 
         {/* Diagonal stripes */}

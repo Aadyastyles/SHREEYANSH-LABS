@@ -14,13 +14,12 @@ const ProductMixDonut = ({ selectedStream }) => {
     else if (selectedStream === 'POCL3') setRotation(41);
     else setRotation(90);
 
-    // Clear active index immediately so it doesn't stay popped out while rotating
-    setActiveIndex(null);
-
     if (selectedStream && selectedStream !== 'YP') {
       const idx = productMix.findIndex(p => p.name === selectedStream);
-      // Wait for the 1000ms rotation animation to complete before popping out the slice
-      setTimeout(() => setActiveIndex(idx !== -1 ? idx : null), 1000);
+      // Immediately set the active index so it pops out instantly on click
+      setActiveIndex(idx !== -1 ? idx : null);
+    } else {
+      setActiveIndex(null);
     }
   }, [selectedStream]);
 
@@ -70,8 +69,8 @@ const ProductMixDonut = ({ selectedStream }) => {
               startAngle={rotation}
               endAngle={rotation - 360}
               onMouseEnter={onPieEnter}
-              animationDuration={1000}
-              animationEasing="ease-out"
+              animationDuration={2000}
+              animationEasing="ease-in-out"
               animationBegin={0}
               isAnimationActive={true}
             >
