@@ -1,75 +1,117 @@
-export const purchaseOrders = [
+// OUTBOUND POs: Finished Goods Sold (Client is usually SCIMPLIFY, but End Party is the final destination)
+export const outboundPOs = [
   {
-    po: 'PO-2026-341',
-    client: 'Meghmani Organics',
+    po: 'PO-FG-2026-341',
+    client: 'SCIMPLIFY',
+    endParty: 'Meghmani Organics',
     product: 'PCL3',
     qty: 2500,
     rate: 320,
     total: 800000,
     dispatchDate: '22 Jun 2026',
     status: 'Dispatched',
+    allocatedBatches: ['B-2406-01', 'B-2406-02'], // Shows split fulfillment
   },
   {
-    po: 'PO-2026-342',
-    client: 'Aarti Industries',
+    po: 'PO-FG-2026-342',
+    client: 'SCIMPLIFY',
+    endParty: 'Aarti Industries',
     product: 'POCL3',
     qty: 1800,
     rate: 285,
     total: 513000,
     dispatchDate: '24 Jun 2026',
     status: 'Dispatched',
+    allocatedBatches: ['B-2406-03'],
   },
   {
-    po: 'PO-2026-343',
-    client: 'UPL Ltd',
+    po: 'PO-FG-2026-343',
+    client: 'SCIMPLIFY',
+    endParty: 'UPL Ltd',
     product: 'PCL5',
     qty: 900,
     rate: 510,
     total: 459000,
     dispatchDate: '25 Jun 2026',
     status: 'Processing',
+    allocatedBatches: ['B-2406-04'],
   },
   {
-    po: 'PO-2026-344',
-    client: 'Meghmani Organics',
+    po: 'PO-FG-2026-344',
+    client: 'SCIMPLIFY',
+    endParty: 'Meghmani Organics',
     product: 'PCL3',
     qty: 3200,
     rate: 320,
     total: 1024000,
     dispatchDate: '28 Jun 2026',
     status: 'Pending',
+    allocatedBatches: [],
   },
   {
-    po: 'PO-2026-345',
-    client: 'Hemani Industries',
-    product: 'POCL3',
-    qty: 1400,
-    rate: 290,
-    total: 406000,
-    dispatchDate: '30 Jun 2026',
-    status: 'Processing',
-  },
-  {
-    po: 'PO-2026-346',
-    client: 'Aarti Industries',
-    product: 'PCL5',
-    qty: 650,
-    rate: 510,
-    total: 331500,
-    dispatchDate: '02 Jul 2026',
-    status: 'Pending',
-  },
-  {
-    po: 'PO-2026-339',
-    client: 'Shree Pushkar Chemicals',
+    po: 'PO-FG-2026-339',
+    client: 'SCIMPLIFY',
+    endParty: 'Shree Pushkar Chemicals',
     product: 'PCL3',
     qty: 2000,
     rate: 318,
     total: 636000,
     dispatchDate: '18 Jun 2026',
     status: 'Overdue',
+    allocatedBatches: ['B-2406-05'],
   },
 ];
+
+// INBOUND POs: Raw Materials bought from SCIMPLIFY
+export const inboundPOs = [
+  {
+    po: 'PO-RM-2026-101',
+    supplier: 'SCIMPLIFY',
+    material: 'Yellow Phosphorus (YP)',
+    qty: 450,
+    baseRate: 295,
+    liaisoningFee: 17, // Per kg
+    totalValue: (295 + 17) * 450,
+    receiveDate: '02 Jun 2026',
+    status: 'Received',
+  },
+  {
+    po: 'PO-RM-2026-102',
+    supplier: 'SCIMPLIFY',
+    material: 'Carboys Drums',
+    qty: 1200, // units
+    baseRate: 150,
+    liaisoningFee: 0,
+    totalValue: 150 * 1200,
+    receiveDate: '05 Jun 2026',
+    status: 'Received',
+  },
+  {
+    po: 'PO-RM-2026-103',
+    supplier: 'SCIMPLIFY',
+    material: 'Coal',
+    qty: 5000,
+    baseRate: 45,
+    liaisoningFee: 2,
+    totalValue: 47 * 5000,
+    receiveDate: '12 Jun 2026',
+    status: 'Pending',
+  },
+  {
+    po: 'PO-RM-2026-104',
+    supplier: 'SCIMPLIFY',
+    material: 'Yellow Phosphorus (YP)',
+    qty: 850,
+    baseRate: 298,
+    liaisoningFee: 15,
+    totalValue: (298 + 15) * 850,
+    receiveDate: '18 Jun 2026',
+    status: 'Processing',
+  }
+];
+
+// Keeping for compatibility if RevenueChart uses it, otherwise update safely
+export const purchaseOrders = outboundPOs; 
 
 export const revenueByProduct = [
   { month: 'Jan', PCL3: 6.2, PCL5: 3.8, POCL3: 4.1 },
